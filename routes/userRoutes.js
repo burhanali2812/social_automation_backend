@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user._id, role: user.role , email: user.email},
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -77,6 +77,37 @@ router.post("/login", async (req, res) => {
         email: user.email,
         role: user.role,
       },
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+});
+
+router.post("/verify-password", async (req, res) => {
+  const { email, password } = req.body; 
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        error: "No User found with that email",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        error: "Invalid email or password",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Password verified successfully",
     });
   } catch (error) {
     res.status(500).json({

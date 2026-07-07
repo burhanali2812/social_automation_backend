@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
+import socialAccountsRoutes from "./routes/socialAccountsRoutes.js";
 import dotenv from "dotenv";
 import dns from "dns";
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/company", companyRoutes);
+app.use("/api/social-accounts", socialAccountsRoutes);
 
 
 const connectDB = async () => {
