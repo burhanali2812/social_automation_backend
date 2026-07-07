@@ -4,7 +4,12 @@ import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
 import dotenv from "dotenv";
+import dns from "dns";
 dotenv.config();
+dns.setServers([
+  "1.1.1.1",
+  "8.8.8.8"
+]);
 
 const app = express();
 const PORT = process.env.PORT || 5000;

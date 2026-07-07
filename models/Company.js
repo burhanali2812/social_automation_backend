@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const companySchema = new mongoose.Schema(
   {
@@ -17,7 +17,7 @@ const companySchema = new mongoose.Schema(
       default: null,
       trim: true,
       validate: {
-        validator: function (value) {
+        validator(value) {
           if (!value) return true;
           return /^https?:\/\/.+/i.test(value);
         },
@@ -53,6 +53,58 @@ const companySchema = new mongoose.Schema(
       },
       trim: true,
     },
+    socialMediaLinks: {
+      facebook: {
+        type: String,
+        trim: true,
+        default: null,
+        validate: {
+          validator(value) {
+            if (!value) return true;
+            return /^https?:\/\/(www\.)?facebook\.com\/.+/i.test(value);
+          },
+          message: "Invalid Facebook URL",
+        },
+      },
+      instagram: {
+        type: String,
+        trim: true,
+        default: null,
+        validate: {
+          validator(value) {
+            if (!value) return true;
+            return /^https?:\/\/(www\.)?instagram\.com\/.+/i.test(value);
+          },
+          message: "Invalid Instagram URL",
+        },
+      },
+      linkedin: {
+        type: String,
+        trim: true,
+        default: null,
+        validate: {
+          validator(value) {
+            if (!value) return true;
+            return /^https?:\/\/(www\.)?linkedin\.com\/.+/i.test(value);
+          },
+          message: "Invalid LinkedIn URL",
+        },
+      },
+     youtube: {
+        type: String,
+        trim: true,
+        default: null,
+        validate: {
+          validator(value) {
+            if (!value) return true;
+            return /^https?:\/\/(www\.)?youtube\.com\/.+/i.test(value);
+          },
+          message: "Invalid YouTube URL",
+        },
+      },
+    },
+    
+
 
     website: {
       type: String,
@@ -60,7 +112,7 @@ const companySchema = new mongoose.Schema(
       lowercase: true,
       default: null,
       validate: {
-        validator: function (value) {
+        validator(value) {
           if (!value) return true;
           return /^https?:\/\/.+/i.test(value);
         },
@@ -103,6 +155,7 @@ const companySchema = new mongoose.Schema(
       minlength: [20, "Prompt should be descriptive"],
       maxlength: [3000, "Prompt cannot exceed 3000 characters"],
     },
+
     slug: {
       type: String,
       unique: true,
@@ -136,11 +189,10 @@ const companySchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-  },
+  }
 );
 
-// Compound indexes
 companySchema.index({ companyName: 1, email: 1 });
 companySchema.index({ companyType: 1 });
 
-module.exports = mongoose.model("Company", companySchema);
+export default mongoose.model("Company", companySchema);
